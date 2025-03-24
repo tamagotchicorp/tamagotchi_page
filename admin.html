@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gerenciar Usuários</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="admin-page">
+  <h1>Gerenciar Usuários</h1>
+  <input type="text" id="newUser" placeholder="Novo usuário" />
+  <button onclick="addUser()">Adicionar</button>
+  <ul id="userList"></ul>
+  <script>
+    const defaultUsers = ["Seraphimon", "Wargreymon", "Patamon", "Hongo"];
+    const storedUsers = JSON.parse(localStorage.getItem('users')) || defaultUsers;
+    localStorage.setItem('users', JSON.stringify(storedUsers));
+
+    function renderUsers() {
+      const userList = document.getElementById('userList');
+      userList.innerHTML = '';
+      storedUsers.forEach((user, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `${user} <button onclick="removeUser(${index})">Remover</button>`;
+        userList.appendChild(li);
+      });
+    }
+
+    function addUser() {
+      const newUser = document.getElementById('newUser').value.trim();
+      if (newUser) {
+        storedUsers.push(newUser);
+        localStorage.setItem('users', JSON.stringify(storedUsers));
+        renderUsers();
+        document.getElementById('newUser').value = '';
+      }
+    }
+
+    function removeUser(index) {
+      storedUsers.splice(index, 1);
+      localStorage.setItem('users', JSON.stringify(storedUsers));
+      renderUsers();
+    }
+
+    renderUsers();
+  </script>
+</body>
+</html>
