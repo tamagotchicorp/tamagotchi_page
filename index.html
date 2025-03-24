@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Tamagotchi Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="login-container">
+    <h1>Bem-vindo ao Mundo Tamagotchi!</h1>
+    <p>Digite seu nome de usuário para acessar:</p>
+    <input type="text" id="username" placeholder="Seu nome">
+    <button onclick="login()">Entrar</button>
+    <p id="error-message"></p>
+  </div>
+
+  <script>
+    const allowedUsers = ["Seraphimon", "Wargreymon", "Patamon", "Hongo"];
+
+    function login() {
+      const username = document.getElementById("username").value.trim();
+      if (allowedUsers.includes(username)) {
+        window.location.href = "dashboard.html?user=" + encodeURIComponent(username);
+      } else {
+        document.getElementById("error-message").textContent = "Usuário não autorizado!";
+      }
+    }
+  </script>
+</body>
+</html>
