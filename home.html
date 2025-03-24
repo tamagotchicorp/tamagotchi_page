@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Home - Tamagotchi</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="home-page">
+  <h1>Você entrou no mundo Tamagotchi!</h1>
+  <p>Bem-vindo, <span id="userDisplay"></span>!</p>
+  <a href="admin.html">Gerenciar Usuários</a>
+  <script>
+    const user = localStorage.getItem('currentUser');
+    if (!user) {
+      window.location.href = 'index.html';
+    } else {
+      document.getElementById('userDisplay').innerText = user;
+    }
+  </script>
+</body>
+</html>
