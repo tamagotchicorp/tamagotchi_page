@@ -1,0 +1,393 @@
+/* Reset e Estilos Gerais */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Press Start 2P', cursive, system-ui, sans-serif;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+    background-color: #ffb6c1;
+    background-image: 
+        linear-gradient(45deg, #ff9bac 25%, transparent 25%), 
+        linear-gradient(-45deg, #ff9bac 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #ff9bac 75%),
+        linear-gradient(-45deg, transparent 75%, #ff9bac 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    padding: 20px;
+}
+
+/* Estilos Tamagotchi */
+.tamagotchi-frame {
+    width: 330px;
+    height: 550px;
+    background-color: #ffcce6;
+    border-radius: 50px;
+    padding: 25px;
+    box-shadow: 
+        0 0 0 10px #ff77a9,
+        0 10px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+.admin-frame {
+    width: 400px;
+    height: 650px;
+    background-color: #b6e7ff;
+    box-shadow: 
+        0 0 0 10px #77b8ff,
+        0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.screen {
+    width: 100%;
+    height: 420px;
+    background-color: #d9f0f3;
+    border-radius: 20px;
+    border: 10px solid #a2d6db;
+    overflow: hidden;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.tamagotchi-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.button {
+    width: 40px;
+    height: 40px;
+    background-color: #ff77a9;
+    border-radius: 50%;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.button:hover {
+    transform: scale(1.1);
+}
+
+.button:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos de Texto Pixel */
+.pixel-title {
+    font-size: 22px;
+    color: #ff77a9;
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 0 #ffcce6;
+    animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 5px #ff77a9; }
+    to { text-shadow: 0 0 10px #ff77a9, 0 0 15px #ff9bac; }
+}
+
+.pixel-subtitle {
+    font-size: 16px;
+    color: #5a7aaa;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* Login Page */
+.login-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.pixel-input {
+    background-color: #ffffff;
+    border: 3px solid #a2d6db;
+    padding: 10px;
+    border-radius: 10px;
+    width: 90%;
+    margin-bottom: 20px;
+    font-size: 14px;
+    text-align: center;
+    outline: none;
+}
+
+.pixel-input:focus {
+    border-color: #77b8ff;
+    box-shadow: 0 0 5px #77b8ff;
+}
+
+.pixel-button {
+    background-color: #ff77a9;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin: 10px 0;
+    box-shadow: 0 4px 0 #d06087;
+}
+
+.pixel-button:hover {
+    background-color: #ff9bac;
+    transform: translateY(-2px);
+}
+
+.pixel-button:active {
+    background-color: #d06087;
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #d06087;
+}
+
+.pixel-error {
+    color: #ff4757;
+    font-size: 12px;
+    margin-top: 10px;
+    text-align: center;
+    min-height: 20px;
+}
+
+/* Admin Page */
+.admin-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.admin-section {
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.pixel-select {
+    background-color: #ffffff;
+    border: 3px solid #a2d6db;
+    padding: 8px;
+    border-radius: 10px;
+    width: 90%;
+    margin-bottom: 10px;
+    font-size: 12px;
+    text-align: center;
+}
+
+.pixel-list {
+    list-style-type: none;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    padding: 10px;
+    max-height: 100px;
+    overflow-y: auto;
+}
+
+.pixel-list li {
+    padding: 5px;
+    border-bottom: 1px solid #a2d6db;
+    font-size: 12px;
+}
+
+.delete-btn {
+    background-color: #ff4757;
+    box-shadow: 0 4px 0 #c0392b;
+}
+
+.delete-btn:hover {
+    background-color: #ff6b6b;
+}
+
+.delete-btn:active {
+    background-color: #c0392b;
+    box-shadow: 0 1px 0 #c0392b;
+}
+
+.back-btn {
+    margin-top: auto;
+    align-self: center;
+}
+
+.pixel-message {
+    font-size: 12px;
+    min-height: 20px;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.error {
+    color: #ff4757;
+}
+
+.success {
+    color: #2ecc71;
+}
+
+/* User Page */
+.user-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+.character-display {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.character-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.buttons-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 15px 0;
+}
+
+.user-button {
+    background-color: #77b8ff;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin: 5px 0;
+    box-shadow: 0 4px 0 #5a7aaa;
+}
+
+.user-button:hover {
+    background-color: #a2d6db;
+    transform: translateY(-2px);
+}
+
+.user-button:active {
+    background-color: #5a7aaa;
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #5a7aaa;
+}
+
+.animation-container {
+    width: 180px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.animation-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.logout-btn {
+    margin-top: auto;
+    margin-bottom: 10px;
+    background-color: #ffaa64;
+    box-shadow: 0 4px 0 #e67e22;
+}
+
+.logout-btn:hover {
+    background-color: #ffc58f;
+}
+
+.logout-btn:active {
+    background-color: #e67e22;
+    box-shadow: 0 1px 0 #e67e22;
+}
+
+/* Temas de usuários */
+.seraphimon-theme {
+    background-color: #e5f2ff;
+}
+
+.wargreymon-theme {
+    background-color: #fff2e5;
+}
+
+.patamon-theme {
+    background-color: #fff9e5;
+}
+
+.hongo-theme {
+    background-color: #e5ffe5;
+}
+
+.admin-theme {
+    background-color: #f2e5ff;
+}
+
+/* Animações e efeitos */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+    .tamagotchi-frame {
+        width: 300px;
+        height: 500px;
+        padding: 15px;
+    }
+    
+    .admin-frame {
+        width: 320px;
+        height: 550px;
+    }
+    
+    .screen {
+        height: 380px;
+    }
+    
+    .pixel-title {
+        font-size: 18px;
+    }
+    
+    .pixel-subtitle {
+        font-size: 14px;
+    }
+}
