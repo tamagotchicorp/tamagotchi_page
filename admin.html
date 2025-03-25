@@ -1,47 +1,44 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <title>Gerenciar Usuários</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Administração</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body class="admin-page">
-  <h1>Gerenciar Usuários</h1>
-  <input type="text" id="newUser" placeholder="Novo usuário" />
-  <button onclick="addUser()">Adicionar</button>
-  <ul id="userList"></ul>
-  <script>
-    const defaultUsers = ["Seraphimon", "Wargreymon", "Patamon", "Hongo"];
-    const storedUsers = JSON.parse(localStorage.getItem('users')) || defaultUsers;
-    localStorage.setItem('users', JSON.stringify(storedUsers));
-
-    function renderUsers() {
-      const userList = document.getElementById('userList');
-      userList.innerHTML = '';
-      storedUsers.forEach((user, index) => {
-        const li = document.createElement('li');
-        li.innerHTML = `${user} <button onclick="removeUser(${index})">Remover</button>`;
-        userList.appendChild(li);
-      });
-    }
-
-    function addUser() {
-      const newUser = document.getElementById('newUser').value.trim();
-      if (newUser) {
-        storedUsers.push(newUser);
-        localStorage.setItem('users', JSON.stringify(storedUsers));
-        renderUsers();
-        document.getElementById('newUser').value = '';
-      }
-    }
-
-    function removeUser(index) {
-      storedUsers.splice(index, 1);
-      localStorage.setItem('users', JSON.stringify(storedUsers));
-      renderUsers();
-    }
-
-    renderUsers();
-  </script>
+<body>
+    <div class="container admin-container">
+        <header>
+            <h1>Painel de Administração</h1>
+            <nav>
+                <a href="user.html" class="btn-back">Voltar</a>
+                <button id="logoutBtn" class="btn-logout">Sair</button>
+            </nav>
+        </header>
+        
+        <section class="add-user-section">
+            <h2>Adicionar Novo Usuário</h2>
+            <form id="addUserForm">
+                <div class="input-group">
+                    <label for="newUsername">Nome de usuário:</label>
+                    <input type="text" id="newUsername" required>
+                </div>
+                <div class="input-group">
+                    <label for="newPassword">Senha:</label>
+                    <input type="password" id="newPassword" required>
+                </div>
+                <button type="submit" class="btn">Adicionar Usuário</button>
+            </form>
+        </section>
+        
+        <section class="user-list-section">
+            <h2>Lista de Usuários</h2>
+            <div id="userList" class="user-list">
+                <!-- Lista de usuários será inserida via JavaScript -->
+            </div>
+        </section>
+    </div>
+    <script src="userManager.js"></script>
+    <script src="admin.js"></script>
 </body>
 </html>
