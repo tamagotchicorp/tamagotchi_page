@@ -14,7 +14,6 @@
                 <div class="admin-section">
                     <h2 class="pixel-subtitle">Adicionar Usuário</h2>
                     <input type="text" id="new-username" class="pixel-input" placeholder="Nome do novo usuário">
-                    <button id="add-user-btn" class="pixel-button">Adicionar</button>
                     <div id="add-message" class="pixel-message"></div>
                 </div>
                 
@@ -23,7 +22,6 @@
                     <select id="user-select" class="pixel-select">
                         <option value="" disabled selected>Selecione um usuário</option>
                     </select>
-                    <button id="delete-user-btn" class="pixel-button delete-btn">Remover</button>
                     <div id="delete-message" class="pixel-message"></div>
                 </div>
                 
@@ -31,23 +29,21 @@
                     <h2 class="pixel-subtitle">Usuários</h2>
                     <ul id="users" class="pixel-list"></ul>
                 </div>
-                
-                <button id="back-btn" class="pixel-button back-btn">Voltar</button>
             </div>
         </div>
         <div class="tamagotchi-buttons">
-            <div class="button"></div>
-            <div class="button"></div>
-            <div class="button"></div>
+            <div class="button" id="left-button"></div>
+            <div class="button" id="center-button"></div>
+            <div class="button" id="right-button"></div>
         </div>
     </div>
 
     <script src="assets/script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const addUserBtn = document.getElementById('add-user-btn');
-            const deleteUserBtn = document.getElementById('delete-user-btn');
-            const backBtn = document.getElementById('back-btn');
+            const leftButton = document.getElementById('left-button');
+            const centerButton = document.getElementById('center-button');
+            const rightButton = document.getElementById('right-button');
             const newUsernameInput = document.getElementById('new-username');
             const userSelect = document.getElementById('user-select');
             const usersList = document.getElementById('users');
@@ -57,7 +53,8 @@
             // Carregar lista de usuários
             loadUsers();
             
-            addUserBtn.addEventListener('click', function() {
+            // Botão esquerdo: Adicionar usuário
+            leftButton.addEventListener('click', function() {
                 const newUsername = newUsernameInput.value.trim();
                 
                 if (!newUsername) {
@@ -70,7 +67,8 @@
                 createUser(newUsername);
             });
             
-            deleteUserBtn.addEventListener('click', function() {
+            // Botão central: Remover usuário selecionado
+            centerButton.addEventListener('click', function() {
                 const username = userSelect.value;
                 
                 if (!username) {
@@ -91,7 +89,8 @@
                 }
             });
             
-            backBtn.addEventListener('click', function() {
+            // Botão direito: Voltar para login
+            rightButton.addEventListener('click', function() {
                 window.location.href = 'index.html';
             });
             
