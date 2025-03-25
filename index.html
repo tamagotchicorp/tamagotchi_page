@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TM-Dell Login</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="login-body">
+    <div class="tamagotchi-frame">
+        <div class="screen">
+            <h1 class="pixel-title">TM-Dell</h1>
+            <div class="login-container">
+                <h2 class="pixel-subtitle">Digite seu nome</h2>
+                <input type="text" id="username" class="pixel-input" placeholder="Nome do usuário">
+                <button id="login-btn" class="pixel-button">Entrar</button>
+                <div class="pixel-error" id="error-message"></div>
+            </div>
+        </div>
+        <div class="tamagotchi-buttons">
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+        </div>
+    </div>
+
+    <script src="assets/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginBtn = document.getElementById('login-btn');
+            const usernameInput = document.getElementById('username');
+            const errorMessage = document.getElementById('error-message');
+
+            loginBtn.addEventListener('click', function() {
+                const username = usernameInput.value.trim();
+                
+                if (!username) {
+                    errorMessage.textContent = "Por favor, insira um nome de usuário!";
+                    return;
+                }
+
+                // Verificar se o usuário existe
+                checkUserExists(username);
+            });
+
+            function checkUserExists(username) {
+                fetch(`user/${username}.html`)
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.href = `user/${username}.html`;
+                        } else {
+                            errorMessage.textContent = "Usuário não encontrado!";
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                        errorMessage.textContent = "Erro ao verificar usuário!";
+                    });
+            }
+        });
+    </script>
+</body>
+</html>
