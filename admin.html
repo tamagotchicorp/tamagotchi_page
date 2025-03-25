@@ -3,42 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Administração</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Admin - Tamagotchi Masters</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container admin-container">
-        <header>
-            <h1>Painel de Administração</h1>
-            <nav>
-                <a href="user.html" class="btn-back">Voltar</a>
-                <button id="logoutBtn" class="btn-logout">Sair</button>
-            </nav>
-        </header>
-        
-        <section class="add-user-section">
-            <h2>Adicionar Novo Usuário</h2>
-            <form id="addUserForm">
-                <div class="input-group">
-                    <label for="newUsername">Nome de usuário:</label>
-                    <input type="text" id="newUsername" required>
+    <div class="container admin-panel">
+        <div class="tamagotchi-device admin-device">
+            <div class="screen admin-screen">
+                <h1>Painel de Admin</h1>
+                
+                <div class="admin-section">
+                    <h2>Gerenciar Usuários</h2>
+                    
+                    <div class="add-user-form">
+                        <h3>Adicionar Usuário</h3>
+                        <input type="text" id="newUsername" placeholder="Nome do usuário">
+                        <button id="addUserBtn">Adicionar</button>
+                        <div id="addUserMessage" class="message"></div>
+                    </div>
+                    
+                    <div class="user-list-section">
+                        <h3>Lista de Usuários</h3>
+                        <ul id="userList" class="user-list"></ul>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <label for="newPassword">Senha:</label>
-                    <input type="password" id="newPassword" required>
-                </div>
-                <button type="submit" class="btn">Adicionar Usuário</button>
-            </form>
-        </section>
-        
-        <section class="user-list-section">
-            <h2>Lista de Usuários</h2>
-            <div id="userList" class="user-list">
-                <!-- Lista de usuários será inserida via JavaScript -->
+                
+                <button id="logoutBtn" class="logout-btn">Sair</button>
             </div>
-        </section>
+            <div class="buttons">
+                <div class="button"></div>
+                <div class="button"></div>
+                <div class="button"></div>
+            </div>
+        </div>
     </div>
-    <script src="userManager.js"></script>
-    <script src="admin.js"></script>
+    <script src="assets/js/admin.js"></script>
 </body>
 </html>
