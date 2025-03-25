@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TM-Dell - Admin</title>
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body class="user-body admin-theme">
+    <div class="tamagotchi-frame">
+        <div class="screen">
+            <h1 class="pixel-title">Painel Admin</h1>
+            <div class="user-container">
+                <div class="character-display">
+                    <img id="character" src="../assets/animations/admin.gif" alt="Admin" class="character-img">
+                </div>
+                
+                <div class="buttons-container">
+                    <button class="user-button" id="button1">Gerenciar Usuários</button>
+                    <button class="user-button" id="button2">Status do Sistema</button>
+                    <button class="user-button" id="button3">Configurações</button>
+                </div>
+                
+                <div class="animation-container">
+                    <img id="animation" src="" alt="Animação" class="animation-img" style="display: none;">
+                </div>
+                
+                <button id="logout-btn" class="pixel-button logout-btn">Sair</button>
+            </div>
+        </div>
+        <div class="tamagotchi-buttons">
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+        </div>
+    </div>
+
+    <script src="../assets/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const button1 = document.getElementById('button1');
+            const button2 = document.getElementById('button2');
+            const button3 = document.getElementById('button3');
+            const logoutBtn = document.getElementById('logout-btn');
+            const animationImg = document.getElementById('animation');
+            const characterImg = document.getElementById('character');
+            
+            button1.addEventListener('click', function() {
+                window.location.href = '../admin.html';
+            });
+            
+            button2.addEventListener('click', function() {
+                playAnimation('../assets/animations/button2.gif');
+            });
+            
+            button3.addEventListener('click', function() {
+                playAnimation('../assets/animations/button3.gif');
+            });
+            
+            logoutBtn.addEventListener('click', function() {
+                window.location.href = '../index.html';
+            });
+            
+            function playAnimation(src) {
+                // Ocultar o personagem
+                characterImg.style.display = 'none';
+                
+                // Mostrar a animação
+                animationImg.src = src;
+                animationImg.style.display = 'block';
+                
+                // Após 3 segundos, reverter
+                setTimeout(() => {
+                    animationImg.style.display = 'none';
+                    characterImg.style.display = 'block';
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
