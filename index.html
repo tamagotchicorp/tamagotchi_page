@@ -13,25 +13,24 @@
             <div class="login-container">
                 <h2 class="pixel-subtitle">Digite seu nome</h2>
                 <input type="text" id="username" class="pixel-input" placeholder="Nome do usuário">
-                <button id="login-btn" class="pixel-button">Entrar</button>
                 <div class="pixel-error" id="error-message"></div>
             </div>
         </div>
         <div class="tamagotchi-buttons">
-            <div class="button"></div>
-            <div class="button"></div>
-            <div class="button"></div>
+            <div class="button" id="left-button"></div>
+            <div class="button" id="center-button"></div>
+            <div class="button" id="right-button"></div>
         </div>
     </div>
 
     <script src="assets/script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const loginBtn = document.getElementById('login-btn');
+            const centerButton = document.getElementById('center-button');
             const usernameInput = document.getElementById('username');
             const errorMessage = document.getElementById('error-message');
 
-            loginBtn.addEventListener('click', function() {
+            centerButton.addEventListener('click', function() {
                 const username = usernameInput.value.trim();
                 
                 if (!username) {
