@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TM-Dell - Seraphimon</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <style>
+        #confirmation-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1000;
+            display: none;
+        }
+        .status-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: gray;
+        }
+        .status-online {
+            background-color: #2ecc71;
+        }
+        .status-offline {
+            background-color: #e74c3c;
+        }
+    </style>
+</head>
+<body class="user-body seraphimon-theme">
+    <div class="tamagotchi-frame">
+        <div class="screen">
+            <div class="status-indicator" id="status-indicator"></div>
+            <div class="digimon-container">
+                <img id="digimon" src="../assets/digimon/seraphimon_base.gif" alt="Seraphimon" class="digimon-img">
+                <div id="particles-container" class="particles-container"></div>
+                <div id="confirmation-message">Comando enviado!</div>
+            </div>
+        </div>
+        <div class="tamagotchi-buttons">
+            <div class="button" id="left-button" title="Sair"></div>
+            <div class="button" id="center-button" title="Alimentar"></div>
+            <div class="button" id="right-button" title="Menu"></div>
+        </div>
+    </div>
+
+    <script src="../assets/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const leftButton = document.getElementById('left-button');
+            const centerButton = document.getElementById('center-button');
+            const rightButton = document.getElementById('right-button');
+            const digimonImg = document.getElementById('digimon');
+            const particlesContainer = document.getElementById('particles-container');
+            const confirmationMessage = document.getElementById('confirmation-message');
+            const statusIndicator = document.getElementById('status-indicator');
+            
+            const username = 'Seraphimon';
+            const usernameLower = 'seraphimon';
+            
+            // URL do Google Apps Script (substitua pela sua)
+            const googleScriptUrl = 'https://script.google.com/macros/s/AKfycbz1IPo6p5gyfMCtmbVuShf8d4az0MLzpZ5gYiW2dxlMz8GW8_U9vrP2FwNUUN9Zw9BUiQ/exec';
+            
+            // Verificar status periodicamente
+            setInterval(checkDeviceStatus, 5000);
+            
+            // Função para mostrar mensagem de confirmação
+            function showConfirmation(message, duration = 2000) {
+                confirmationMessage.textContent = message;
+                confirmationMessage.style.display = 'block';
+                
+                setTimeout(() => {
+                    confirmationMessage.style.display = 'none';
+                }, duration);
+            }
+            
+            // Verificar status do dispositivo
+            function checkDeviceStatus() {
+                fetch(`${googleScriptUrl}?action=getStatus`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Status do dispositivo:', data);
+                        
+                        // Atualizar indicador de status
+                        if (data.status === 'online') {
+                            statusIndicator.className = 'status-indicator status-online';
+                        } else {
+                            statusIndicator.className = 'status-indicator status-offline';
+                        }
+                        
+                        // Se houver uma resposta nova, mostrar
+                        if (data.lastResponse && localStorage.getItem('lastResponse') !== data.lastResponse) {
+                            showConfirmation(data.lastResponse);
+                            localStorage.setItem('lastResponse', data.lastResponse);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro ao verificar status:', error);
+                        statusIndicator.className = 'status-indicator status-offline';
+                    });
+            }
+            
+            // Enviar comando para o dispositivo
+            function sendCommand(command) {
+                showConfirmation('Enviando comando...');
+                
+                fetch(`${googleScriptUrl}?action=sendCommand&command=${command}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Comando enviado:', data);
+                        showConfirmation('Comando enviado!');
+                    })
+                    .catch(error => {
+                        console.error('Erro ao enviar comando:', error);
+                        showConfirmation('Erro ao enviar comando');
+                    });
+            }
+            
+            // Botão esquerdo: Sair (voltar para login)
+            leftButton.addEventListener('click', function() {
+                sendCommand('left_button');
+                
+                // Delay para dar tempo de enviar o comando antes de navegar
+                setTimeout(() => {
+                    window.location.href = '../index.html';
+                }, 1500);
+            });
+            
+            // Botão central: Alimentar (digievolução)
+            centerButton.addEventListener('click', function() {
+                // Enviar comando
+                sendCommand('center_button');
+                
+                // Trocar para GIF de evolução
+                digimonImg.src = `../assets/digimon/${usernameLower}_evolution.gif`;
+                
+                // Criar efeito de partículas
+                createDigiEvolutionParticles();
+                
+                // Após 5 segundos, volta ao normal
+                setTimeout(() => {
+                    digimonImg.src = `../assets/digimon/${usernameLower}_base.gif`;
+                    clearParticles();
+                }, 5000);
+            });
+            
+            // Botão direito: Menu
+            rightButton.addEventListener('click', function() {
+                sendCommand('right_button');
+                // Adicione aqui qualquer outra funcionalidade para o botão direito
+            });
+            
+            // Verificar status inicial
+            checkDeviceStatus();
+            
+            // Função para criar partículas de digievolução
+            function createDigiEvolutionParticles() {
+                clearParticles(); // Limpa partículas anteriores
+                
+                // Cria 30 partículas
+                for (let i = 0; i < 30; i++) {
+                    createParticle();
+                }
+            }
+            
+            // Função para criar uma partícula
+            function createParticle() {
+                const particle = document.createElement('div');
+                particle.classList.add('evolution-particle');
+                
+                // Posição aleatória na tela
+                const screenWidth = particlesContainer.clientWidth;
+                const screenHeight = particlesContainer.clientHeight;
+                
+                const size = Math.random() * 8 + 4; // Tamanho entre 4px e 12px
+                
+                // Posição inicial no centro da tela
+                const startX = screenWidth / 2 - size / 2;
+                const startY = screenHeight / 2 - size / 2;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${startX}px`;
+                particle.style.top = `${startY}px`;
+                
+                // Cor aleatória entre dourado e branco
+                const hue = Math.random() * 60 + 40; // 40-100 (amarelo a dourado)
+                const lightness = Math.random() * 30 + 70; // 70-100% (brilhante)
+                particle.style.backgroundColor = `hsl(${hue}, 100%, ${lightness}%)`;
+                
+                // Adiciona ao container
+                particlesContainer.appendChild(particle);
+                
+                // Anima a partícula
+                const angle = Math.random() * Math.PI * 2; // Ângulo aleatório
+                const distance = Math.random() * 100 + 50; // Distância entre 50 e 150px
+                
+                const destX = startX + Math.cos(angle) * distance;
+                const destY = startY + Math.sin(angle) * distance;
+                
+                // Usa Web Animation API
+                const animation = particle.animate(
+                    [
+                        { 
+                            transform: 'scale(0)', 
+                            opacity: 0 
+                        },
+                        { 
+                            transform: 'scale(1)',
+                            opacity: 1,
+                            offset: 0.2
+                        },
+                        { 
+                            transform: `translate(${destX - startX}px, ${destY - startY}px) scale(0)`,
+                            opacity: 0 
+                        }
+                    ],
+                    {
+                        duration: 2000 + Math.random() * 1000,
+                        easing: 'cubic-bezier(0.4, 0.0, 0.2, 1)',
+                        fill: 'forwards'
+                    }
+                );
+                
+                // Remove a partícula após a animação
+                animation.onfinish = () => {
+                    particle.remove();
+                };
+            }
+            
+            // Função para limpar todas as partículas
+            function clearParticles() {
+                while (particlesContainer.firstChild) {
+                    particlesContainer.removeChild(particlesContainer.firstChild);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
