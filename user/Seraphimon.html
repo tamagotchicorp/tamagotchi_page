@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TM-Dell - Seraphimon</title>
     <link rel="stylesheet" href="../assets/style.css">
+    <!-- Add MQTT.js client library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
 </head>
 <body class="user-body seraphimon-theme">
     <div class="tamagotchi-frame">
@@ -21,8 +23,22 @@
         </div>
     </div>
 
+    <div id="connection-status" style="position: fixed; bottom: 10px; right: 10px; padding: 5px 10px; background-color: #f44336; color: white; border-radius: 4px; display: none;">
+        Desconectado
+    </div>
+
     <script src="../assets/script.js"></script>
     <script>
+        // MQTT client variables
+        let client;
+        const brokerUrl = "3e19bace4703495abd99eb6cfcb8056e.s1.eu.hivemq.cloud";
+        const brokerPort = 8884; // Websocket TLS port
+        const clientId = "web_" + Math.random().toString(16).substring(2, 8);
+        const username = "YOUR_MQTT_USERNAME"; // Replace with your HiveMQ credentials
+        const password = "YOUR_MQTT_PASSWORD"; // Replace with your HiveMQ credentials
+        const topic = "esp32/control";
+        const statusElement = document.getElementById('connection-status');
+        
         document.addEventListener('DOMContentLoaded', function() {
             const leftButton = document.getElementById('left-button');
             const centerButton = document.getElementById('center-button');
@@ -33,25 +49,135 @@
             const username = 'Seraphimon';
             const usernameLower = 'seraphimon';
             
-            // Botão esquerdo: Sair (voltar para login)
+            // Initialize MQTT connection
+            connectMQTT();
+            
+            // Botão esquerdo: Envia comando 1
             leftButton.addEventListener('click', function() {
+                // Original functionality
                 window.location.href = '../index.html';
+                
+                // Send MQTT message for button 1
+                sendMQTTMessage("button1");
             });
             
-            // Botão central: Alimentar (digievolução)
+            // Botão central: Envia comando 2
             centerButton.addEventListener('click', function() {
-                // Trocar para GIF de evolução
+                // Original functionality - Digimon evolution animation
                 digimonImg.src = `../assets/digimon/${usernameLower}_evolution.gif`;
-                
-                // Criar efeito de partículas
                 createDigiEvolutionParticles();
                 
-                // Após 5 segundos, volta ao normal
                 setTimeout(() => {
                     digimonImg.src = `../assets/digimon/${usernameLower}_base.gif`;
                     clearParticles();
                 }, 5000);
+                
+                // Send MQTT message for button 2
+                sendMQTTMessage("button2");
             });
+            
+            // Botão direito: Envia comando 3
+            rightButton.addEventListener('click', function() {
+                // Send MQTT message for button 3
+                sendMQTTMessage("button3");
+            });
+            
+            // MQTT connection function
+            function connectMQTT() {
+                statusElement.style.display = 'block';
+                statusElement.textContent = 'Conectando...';
+                statusElement.style.backgroundColor = '#ff9800';
+                
+                try {
+                    client = new Paho.MQTT.Client(
+                        brokerUrl,
+                        brokerPort,
+                        "/mqtt",
+                        clientId
+                    );
+                    
+                    // Set connection options
+                    const options = {
+                        useSSL: true,
+                        userName: username,
+                        password: password,
+                        onSuccess: onConnect,
+                        onFailure: onFailure
+                    };
+                    
+                    // Set callback handlers
+                    client.onConnectionLost = onConnectionLost;
+                    
+                    // Connect to broker
+                    client.connect(options);
+                } catch (e) {
+                    console.error("MQTT Connection Error:", e);
+                    statusElement.textContent = 'Erro na conexão';
+                    statusElement.style.backgroundColor = '#f44336';
+                }
+            }
+            
+            function onConnect() {
+                console.log("MQTT Connected");
+                statusElement.textContent = 'Conectado';
+                statusElement.style.backgroundColor = '#4CAF50';
+                
+                // Hide status after 3 seconds
+                setTimeout(() => {
+                    statusElement.style.display = 'none';
+                }, 3000);
+            }
+            
+            function onFailure(e) {
+                console.error("MQTT Failed to connect:", e);
+                statusElement.textContent = 'Falha na conexão';
+                statusElement.style.backgroundColor = '#f44336';
+                
+                // Try to reconnect after 5 seconds
+                setTimeout(connectMQTT, 5000);
+            }
+            
+            function onConnectionLost(responseObject) {
+                if (responseObject.errorCode !== 0) {
+                    console.error("MQTT Connection Lost:", responseObject.errorMessage);
+                    statusElement.style.display = 'block';
+                    statusElement.textContent = 'Desconectado';
+                    statusElement.style.backgroundColor = '#f44336';
+                    
+                    // Try to reconnect
+                    setTimeout(connectMQTT, 5000);
+                }
+            }
+            
+            function sendMQTTMessage(message) {
+                if (!client || !client.isConnected()) {
+                    console.warn("MQTT not connected, trying to reconnect...");
+                    connectMQTT();
+                    return;
+                }
+                
+                try {
+                    const mqttMsg = new Paho.MQTT.Message(message);
+                    mqttMsg.destinationName = topic;
+                    client.send(mqttMsg);
+                    console.log("MQTT Message sent:", message);
+                    
+                    // Show feedback
+                    statusElement.style.display = 'block';
+                    statusElement.textContent = 'Comando enviado: ' + message;
+                    statusElement.style.backgroundColor = '#2196F3';
+                    
+                    // Hide status after 2 seconds
+                    setTimeout(() => {
+                        statusElement.style.display = 'none';
+                    }, 2000);
+                } catch (e) {
+                    console.error("Error sending MQTT message:", e);
+                    statusElement.style.display = 'block';
+                    statusElement.textContent = 'Erro ao enviar';
+                    statusElement.style.backgroundColor = '#f44336';
+                }
+            }
             
             // Função para criar partículas de digievolução
             function createDigiEvolutionParticles() {
