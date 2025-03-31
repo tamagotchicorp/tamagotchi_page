@@ -33,22 +33,178 @@
         .status-offline {
             background-color: #e74c3c;
         }
+
+        /* Sliding Device Container */
+        .device-container {
+            position: relative;
+            width: 330px;
+            height: 550px;
+            perspective: 1000px;
+        }
+
+        /* Main Tamagotchi Frame */
+        .tamagotchi-frame {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-origin: center top;
+        }
+
+        /* Keyboard Toggle Arrow */
+        .keyboard-toggle {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 25px;
+            background-color: #ff77a9;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .keyboard-toggle::after {
+            content: "▼";
+            color: white;
+            font-size: 16px;
+        }
+        
+        .keyboard-toggle.active::after {
+            content: "▲";
+        }
+        
+        /* Hidden Keyboard Section */
+        .hidden-keyboard {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 330px;
+            height: 550px;
+            background-color: #ffcce6;
+            border-radius: 50px;
+            padding: 25px;
+            box-shadow: 
+                0 0 0 10px #ff77a9,
+                0 10px 20px rgba(0, 0, 0, 0.3);
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Keyboard Content */
+        .keyboard-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .keyboard-title {
+            color: #ff77a9;
+            font-size: 18px;
+            margin-bottom: 25px;
+            text-align: center;
+            text-shadow: 1px 1px 0 white;
+        }
+        
+        .keyboard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 15px;
+            width: 80%;
+            max-width: 250px;
+        }
+        
+        .key-btn {
+            width: 100%;
+            height: 40px;
+            background-color: white;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.1s, background-color 0.2s;
+        }
+        
+        .key-btn:active {
+            transform: scale(0.95);
+            background-color: #ffcce6;
+        }
+
+        /* N97-Style Sliding Animation */
+        .device-container.slide-active .tamagotchi-frame {
+            transform: translateY(-180px);
+        }
+
+        /* Decorative Elements */
+        .keyboard-branding {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            color: #ff77a9;
+            font-size: 12px;
+            opacity: 0.7;
+        }
     </style>
 </head>
 <body class="user-body seraphimon-theme">
-    <div class="tamagotchi-frame">
-        <div class="screen">
-            <div class="status-indicator" id="status-indicator"></div>
-            <div class="digimon-container">
-                <img id="digimon" src="../assets/digimon/seraphimon_base.gif" alt="Seraphimon" class="digimon-img">
-                <div id="particles-container" class="particles-container"></div>
-                <div id="confirmation-message">Comando enviado!</div>
+    <!-- Container for the sliding mechanism -->
+    <div class="device-container" id="device-container">
+        <!-- Main Tamagotchi device (will slide) -->
+        <div class="tamagotchi-frame" id="tamagotchi-frame">
+            <div class="screen">
+                <div class="status-indicator" id="status-indicator"></div>
+                <div class="digimon-container">
+                    <img id="digimon" src="../assets/digimon/seraphimon_base.gif" alt="Seraphimon" class="digimon-img">
+                    <div id="particles-container" class="particles-container"></div>
+                    <div id="confirmation-message">Comando enviado!</div>
+                </div>
             </div>
+            <div class="tamagotchi-buttons">
+                <div class="button" id="left-button" title="Sair"></div>
+                <div class="button" id="center-button" title="Alimentar"></div>
+                <div class="button" id="right-button" title="Menu"></div>
+            </div>
+            
+            <!-- Keyboard toggle arrow (repositioned to bottom) -->
+            <div class="keyboard-toggle" id="keyboard-toggle"></div>
         </div>
-        <div class="tamagotchi-buttons">
-            <div class="button" id="left-button" title="Sair"></div>
-            <div class="button" id="center-button" title="Alimentar"></div>
-            <div class="button" id="right-button" title="Menu"></div>
+        
+        <!-- Hidden keyboard (same size, behind main screen) -->
+        <div class="hidden-keyboard" id="hidden-keyboard">
+            <div class="keyboard-content">
+                <div class="keyboard-title">COMANDO DIRETO</div>
+                <div class="keyboard-grid">
+                    <div class="key-btn">1</div>
+                    <div class="key-btn">2</div>
+                    <div class="key-btn">3</div>
+                    <div class="key-btn">4</div>
+                    <div class="key-btn">5</div>
+                    <div class="key-btn">6</div>
+                    <div class="key-btn">7</div>
+                    <div class="key-btn">8</div>
+                    <div class="key-btn">9</div>
+                    <div class="key-btn">*</div>
+                    <div class="key-btn">0</div>
+                    <div class="key-btn">#</div>
+                </div>
+                <div class="keyboard-branding">TM-Dell N97</div>
+            </div>
         </div>
     </div>
 
@@ -62,6 +218,48 @@
             const particlesContainer = document.getElementById('particles-container');
             const confirmationMessage = document.getElementById('confirmation-message');
             const statusIndicator = document.getElementById('status-indicator');
+            
+            // N97 sliding components
+            const deviceContainer = document.getElementById('device-container');
+            const keyboardToggle = document.getElementById('keyboard-toggle');
+            const keyButtons = document.querySelectorAll('.key-btn');
+            
+            // Toggle sliding keyboard effect (N97 style)
+            keyboardToggle.addEventListener('click', function() {
+                deviceContainer.classList.toggle('slide-active');
+                keyboardToggle.classList.toggle('active');
+                
+                // Play slide sound effect (optional)
+                const slideSound = new Audio('../assets/sounds/slide.mp3');
+                if (slideSound) {
+                    slideSound.volume = 0.3;
+                    slideSound.play().catch(e => console.log('Sound play prevented by browser'));
+                }
+            });
+            
+            // Add event listeners to key buttons
+            keyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const keyValue = this.textContent;
+                    console.log('Key pressed:', keyValue);
+                    
+                    // Send key command to device
+                    sendCommand(`key_${keyValue}`);
+                    
+                    // Visual feedback
+                    this.style.backgroundColor = '#ffcce6';
+                    setTimeout(() => {
+                        this.style.backgroundColor = 'white';
+                    }, 200);
+                    
+                    // Play click sound (optional)
+                    const clickSound = new Audio('../assets/sounds/key.mp3');
+                    if (clickSound) {
+                        clickSound.volume = 0.2;
+                        clickSound.play().catch(e => console.log('Sound play prevented by browser'));
+                    }
+                });
+            });
             
             const username = 'Seraphimon';
             const usernameLower = 'seraphimon';
